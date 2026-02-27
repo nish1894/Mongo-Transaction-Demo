@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login — Cold Storage Monitor</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background: #f5f7fa;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    h1 {
+      color: #1565c0;
+      font-size: 20px;
+      margin-bottom: 28px;
+      letter-spacing: 1px;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 360px;
+      background: #fff;
+      border-radius: 8px;
+      padding: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e0e6f0;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: bold;
+      color: #aaa;
+      cursor: pointer;
+      border-radius: 0;
+    }
+    .tab-btn.active { color: #1565c0; border-bottom-color: #1565c0; }
+
+    .auth-form { display: flex; flex-direction: column; gap: 10px; }
+    .auth-form input {
+      padding: 9px 12px;
+      border: 1px solid #d0d9e8;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #f9fafb;
+      color: #333;
+      outline: none;
+    }
+    .auth-form input:focus { border-color: #1565c0; background: #fff; }
+
+    .auth-submit {
+      padding: 10px;
+      background: #1565c0;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: inherit;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+    .auth-submit:hover { background: #1976d2; }
+
+    .auth-msg {
+      font-size: 12px;
+      min-height: 18px;
+      text-align: center;
+    }
+    .auth-msg.error   { color: #c62828; }
+    .auth-msg.success { color: #2e7d32; }
+  </style>
+</head>
+<body>
+
+  <h1>Smart Cold Storage Monitor</h1>
+
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <button class="tab-btn active" id="tabLogin"  onclick="showTab('login')">Login</button>
+      <button class="tab-btn"        id="tabSignup" onclick="showTab('signup')">Sign Up</button>
+    </div>
+
+    <div id="loginForm" class="auth-form">
+      <input type="email"    id="loginEmail"    placeholder="Email" />
+      <input type="password" id="loginPassword" placeholder="Password" />
+      <button class="auth-submit" onclick="doLogin()">Login</button>
+      <div id="loginMsg" class="auth-msg"></div>
+    </div>
+
+    <div id="signupForm" class="auth-form" style="display:none">
+      <input type="email"    id="signupEmail"    placeholder="Email" />
+      <input type="password" id="signupPassword" placeholder="Password" />
+      <button class="auth-submit" onclick="doSignup()">Create Account</button>
+      <div id="signupMsg" class="auth-msg"></div>
+    </div>
+  </div>
+
+  <script>
+    // If already logged in, go straight to the dashboard
+    if (localStorage.getItem('token')) {
+      window.location.replace('/');
+    }
+
+    function showTab(tab) {
+      const isLogin = tab === 'login';
+      document.getElementById('loginForm').style.display  = isLogin ? 'flex' : 'none';
+      document.getElementById('signupForm').style.display = isLogin ? 'none'  : 'flex';
+      document.getElementById('tabLogin').classList.toggle('active',  isLogin);
+      document.getElementById('tabSignup').classList.toggle('active', !isLogin);
+    }
+
+    function setMsg(id, text, type) {
+      const el = document.getElementById(id);
+      el.textContent = text;
+      el.className   = 'auth-msg ' + type;
+    }
+
+    async function doLogin() {
+      const email    = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      setMsg('loginMsg', '', '');
+
+      try {
+        const res  = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+        if (!res.ok) return setMsg('loginMsg', data.message, 'error');
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('email', email);
+        window.location.replace('/');
+      } catch {
+        setMsg('loginMsg', 'Request failed', 'error');
+      }
+    }
+
+    async function doSignup() {
+      const email    = document.getElementById('signupEmail').value.trim();
+      const password = document.getElementById('signupPassword').value;
+      setMsg('signupMsg', '', '');
+
+      try {
+        const res  = await fetch('/api/auth/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+        if (!res.ok) return setMsg('signupMsg', data.message, 'error');
+
+        setMsg('signupMsg', 'Account created — please log in', 'success');
+        document.getElementById('signupEmail').value    = '';
+        document.getElementById('signupPassword').value = '';
+        setTimeout(() => showTab('login'), 1000);
+      } catch {
+        setMsg('signupMsg', 'Request failed', 'error');
+      }
+    }
+  </script>
+
+</body>
+</html>
