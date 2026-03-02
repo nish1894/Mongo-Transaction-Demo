@@ -20,4 +20,14 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { signup, login };
+const verify2FA = async (req, res) => {
+  try {
+    const { email, token } = req.body;
+    const result = await authService.verify2FA(email, token);
+    res.json(result);
+  } catch (err) {
+    res.status(err.status || 500).json({ message: err.message });
+  }
+};
+
+module.exports = { signup, login, verify2FA };

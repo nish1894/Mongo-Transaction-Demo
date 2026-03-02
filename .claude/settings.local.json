@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npm install express mongoose dotenv)",
       "Bash(cat /Users/nishk/New_Code/work/1_Mongo_transaction_demo/config/*.js)",
-      "Bash(npm install bcrypt jsonwebtoken)"
+      "Bash(npm install bcrypt jsonwebtoken)",
+      "Bash(npm install speakeasy qrcode)"
     ]
   }
 }

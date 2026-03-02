@@ -13,11 +13,7 @@
       padding: 24px;
     }
 
-    h1 {
-      color: #1565c0;
-      font-size: 20px;
-      letter-spacing: 1px;
-    }
+    h1 { color: #1565c0; font-size: 20px; letter-spacing: 1px; }
 
     /* ── Top bar ── */
     .top-bar {
@@ -26,9 +22,132 @@
       align-items: center;
       margin-bottom: 14px;
     }
-    .controls { display: flex; align-items: center; gap: 0; }
-    .user-info { font-size: 12px; color: #888; display: flex; align-items: center; gap: 10px; }
+    .controls { display: flex; align-items: center; }
 
+    /* ── Profile button + dropdown ── */
+    .profile-wrapper { position: relative; }
+    .profile-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 13px;
+      background: #e8edf5;
+      border: 1px solid #c5d3e8;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: inherit;
+      color: #1565c0;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 0;
+    }
+    .profile-btn:hover { background: #dde6f5; }
+    .profile-arrow { font-size: 9px; opacity: 0.7; }
+
+    .profile-dropdown {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+      background: #fff;
+      border: 1px solid #e0e6f0;
+      border-radius: 8px;
+      padding: 16px;
+      min-width: 260px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.11);
+      z-index: 50;
+    }
+    .drop-email { font-size: 13px; font-weight: bold; color: #1565c0; margin-bottom: 3px; }
+    .drop-role  { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #aaa; margin-bottom: 14px; }
+    .drop-role.admin { color: #1565c0; }
+    .drop-divider { border: none; border-top: 1px solid #e0e6f0; margin: 12px 0; }
+
+    .twofa-on  { font-size: 12px; color: #2e7d32; font-weight: bold; }
+    .twofa-off { font-size: 12px; color: #aaa; }
+    .btn-2fa {
+      display: inline-block;
+      margin-top: 7px;
+      padding: 6px 14px;
+      background: #1565c0;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-2fa:hover { background: #1976d2; }
+
+    /* QR confirm inside dropdown */
+    .qr-wrap { margin-top: 12px; }
+    .qr-wrap p { font-size: 11px; color: #666; margin-bottom: 8px; }
+    .qr-wrap img { display: block; width: 140px; height: 140px; border: 1px solid #e0e6f0; border-radius: 4px; margin-bottom: 10px; }
+    .qr-confirm-row { display: flex; gap: 7px; align-items: center; }
+    .qr-confirm-row input {
+      width: 110px; padding: 6px 8px; text-align: center;
+      letter-spacing: 4px; font-size: 15px; font-family: inherit;
+      border: 1px solid #d0d9e8; border-radius: 4px;
+      background: #f9fafb; outline: none;
+    }
+    .qr-confirm-row input:focus { border-color: #1565c0; background: #fff; }
+    .qr-confirm-row button {
+      padding: 6px 12px; background: #2e7d32; color: #fff;
+      border: none; border-radius: 4px; font-family: inherit;
+      font-size: 12px; font-weight: bold; cursor: pointer; margin: 0;
+    }
+    .confirm-msg { font-size: 11px; margin-top: 6px; min-height: 14px; color: #c62828; }
+
+    .drop-logout {
+      width: 100%;
+      padding: 7px;
+      background: none;
+      border: 1px solid #e0e6f0;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: inherit;
+      color: #1565c0;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 0;
+    }
+    .drop-logout:hover { border-color: #c62828; color: #c62828; background: #ffebee; }
+
+    /* ── PAT section ── */
+    .pat-section h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #aaa; margin-bottom: 8px; }
+    .pat-create-row { display: flex; gap: 6px; margin-bottom: 8px; }
+    .pat-create-row input {
+      flex: 1; padding: 5px 8px; font-size: 12px; font-family: inherit;
+      border: 1px solid #d0d9e8; border-radius: 4px; background: #f9fafb; outline: none;
+    }
+    .pat-create-row input:focus { border-color: #1565c0; background: #fff; }
+    .pat-create-row button {
+      padding: 5px 10px; background: #1565c0; color: #fff; border: none;
+      border-radius: 4px; font-family: inherit; font-size: 12px; font-weight: bold; cursor: pointer; margin: 0;
+    }
+    .pat-create-row button:hover { background: #1976d2; }
+    .pat-token-box {
+      background: #f0f4ff; border: 1px solid #c5d3e8; border-radius: 4px;
+      padding: 8px; font-size: 11px; word-break: break-all; margin-bottom: 8px;
+    }
+    .pat-token-box strong { display: block; color: #c62828; margin-bottom: 4px; }
+    .pat-token-box code { color: #1565c0; }
+    .pat-list { max-height: 120px; overflow-y: auto; }
+    .pat-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 5px 0; border-bottom: 1px solid #f0f0f0; font-size: 12px;
+    }
+    .pat-item:last-child { border-bottom: none; }
+    .pat-item-name { color: #333; }
+    .pat-item-date { color: #aaa; font-size: 11px; margin-left: 6px; }
+    .pat-item-revoked { color: #ccc; font-style: italic; }
+    .pat-revoke-btn {
+      padding: 2px 8px; background: none; border: 1px solid #e0e6f0;
+      border-radius: 3px; font-size: 11px; font-family: inherit; color: #c62828;
+      cursor: pointer; margin: 0;
+    }
+    .pat-revoke-btn:hover { background: #ffebee; border-color: #c62828; }
+
+    /* ── Sensor controls ── */
     button {
       padding: 9px 22px;
       margin-right: 10px;
@@ -43,35 +162,9 @@
     #stopBtn  { background: #e74c3c; color: #fff; }
     button:disabled { opacity: 0.35; cursor: not-allowed; }
 
-    .logout-btn {
-      padding: 5px 14px;
-      background: none;
-      border: 1px solid #d0d9e8;
-      border-radius: 4px;
-      font-size: 12px;
-      font-family: inherit;
-      color: #888;
-      cursor: pointer;
-      margin-right: 0;
-      font-weight: normal;
-    }
-    .logout-btn:hover { border-color: #c62828; color: #c62828; }
-
     /* ── Status bar ── */
-    .status-bar {
-      margin-bottom: 20px;
-      font-size: 12px;
-      color: #888;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-    .dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #ccc;
-      display: inline-block;
-    }
+    .status-bar { font-size: 12px; color: #888; display: flex; align-items: center; gap: 7px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; display: inline-block; }
     .dot.running { background: #2ecc71; animation: pulse 1.2s infinite; }
     @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
 
@@ -107,6 +200,8 @@
     .badge { padding: 2px 8px; border-radius: 3px; font-size: 11px; font-weight: bold; }
     .badge-normal { background: #e8f5e9; color: #2e7d32; }
     .badge-alert  { background: #ffebee; color: #c62828; }
+    .badge-admin  { background: #e8edf5; color: #1565c0; }
+    .badge-user   { background: #f3f4f6; color: #666; }
 
     /* ── Alert panel ── */
     .alert-list { max-height: 480px; overflow-y: auto; }
@@ -127,103 +222,119 @@
 
     .empty { color: #aaa; font-size: 12px; text-align: center; padding: 24px; }
 
+    /* ── Admin section ── */
+    .admin-section { margin-top: 28px; }
+    .promote-btn {
+      padding: 3px 10px;
+      background: #1565c0;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+      margin: 0;
+      font-weight: bold;
+    }
+    .promote-btn:hover { background: #1976d2; }
+
     /* ── Incident modal ── */
     .modal-overlay {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(0,0,0,0.25);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       z-index: 100;
     }
     .modal-box {
-      background: #fff;
-      border-radius: 8px;
-      padding: 20px 24px;
-      min-width: 300px;
-      max-width: 420px;
-      width: 90%;
+      background: #fff; border-radius: 8px; padding: 20px 24px;
+      min-width: 300px; max-width: 420px; width: 90%;
       box-shadow: 0 8px 32px rgba(0,0,0,0.15);
     }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 16px;
-    }
-    .modal-title {
-      font-size: 13px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #1565c0;
-    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-title { font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #1565c0; }
     .modal-close {
-      background: none;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      width: 26px; height: 26px;
-      padding: 0; margin: 0;
-      font-size: 16px;
-      color: #888;
-      cursor: pointer;
-      line-height: 1;
+      background: none; border: 1px solid #ddd; border-radius: 4px;
+      width: 26px; height: 26px; padding: 0; margin: 0;
+      font-size: 16px; color: #888; cursor: pointer; line-height: 1;
     }
     .modal-close:hover { background: #f5f5f5; color: #333; }
-    .incident-field {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 10px;
-      font-size: 13px;
-      align-items: flex-start;
-    }
-    .inc-label {
-      min-width: 64px;
-      color: #999;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      padding-top: 2px;
-    }
+    .incident-field { display: flex; gap: 10px; margin-bottom: 10px; font-size: 13px; align-items: flex-start; }
+    .inc-label { min-width: 64px; color: #999; font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; padding-top: 2px; }
     .inc-value   { color: #333; }
     .inc-message { color: #c62828; font-weight: bold; }
   </style>
 </head>
 <body>
 
+  <!-- ── Top bar ── -->
   <div class="top-bar">
     <h1>Smart Cold Storage Monitor</h1>
-    <div class="user-info">
-      <span id="loggedInAs"></span>
-      <button class="logout-btn" onclick="doLogout()">Logout</button>
+    <div class="profile-wrapper">
+      <button class="profile-btn" id="profileBtn" onclick="toggleDropdown()">
+        <span id="loggedInAs"></span>
+        <span class="profile-arrow">▾</span>
+      </button>
+
+      <div class="profile-dropdown" id="profileDropdown" style="display:none">
+        <div class="drop-email" id="dropEmail">—</div>
+        <div class="drop-role"  id="dropRole">—</div>
+
+        <hr class="drop-divider" />
+
+        <!-- 2FA status + enable flow -->
+        <div id="twoFASection"></div>
+        <div class="qr-wrap" id="qrSection" style="display:none">
+          <p>Scan with Microsoft Authenticator, then enter the 6-digit code.</p>
+          <img id="qrImage" src="" alt="QR Code" />
+          <div class="qr-confirm-row">
+            <input type="text" id="confirmOTP" placeholder="000000" maxlength="6" inputmode="numeric" />
+            <button onclick="doConfirm2FA()">Confirm</button>
+          </div>
+          <div class="confirm-msg" id="confirmMsg"></div>
+        </div>
+
+        <hr class="drop-divider" />
+
+        <!-- PAT management -->
+        <div class="pat-section">
+          <h3>Access Tokens</h3>
+          <div class="pat-create-row">
+            <input type="text" id="patName" placeholder="Token name (optional)" />
+            <button onclick="doCreatePAT()">Generate</button>
+          </div>
+          <div id="patTokenBox" style="display:none" class="pat-token-box">
+            <strong>Copy now — will not be shown again</strong>
+            <code id="patTokenValue"></code>
+          </div>
+          <div class="pat-list" id="patList"></div>
+        </div>
+
+        <hr class="drop-divider" />
+        <button class="drop-logout" onclick="doLogout()">Logout</button>
+      </div>
     </div>
   </div>
 
-  <div class="top-bar">
+  <!-- ── Controls + status ── -->
+  <div class="top-bar" style="margin-bottom:20px">
     <div class="controls">
       <button id="startBtn" onclick="startSensors()">▶ Start</button>
       <button id="stopBtn"  onclick="stopSensors()" disabled>■ Stop</button>
     </div>
-    <div class="status-bar" style="margin:0">
+    <div class="status-bar">
       <span class="dot" id="statusDot"></span>
       <span id="statusText">Stopped</span>
     </div>
   </div>
 
-  <div style="margin-bottom:20px"></div>
-
+  <!-- ── Main layout ── -->
   <div class="layout">
-
     <div class="main-panel">
       <h2>Sensor Readings</h2>
       <table>
         <thead>
           <tr>
-            <th>Sensor</th>
-            <th>Temperature</th>
-            <th>Status</th>
-            <th>Last Updated</th>
+            <th>Sensor</th><th>Temperature</th><th>Status</th><th>Last Updated</th>
           </tr>
         </thead>
         <tbody id="readingsTable">
@@ -238,10 +349,24 @@
         <div class="empty">No alerts yet</div>
       </div>
     </div>
-
   </div>
 
-  <!-- Incident modal -->
+  <!-- ── Admin: user list (admin only) ── -->
+  <div class="admin-section" id="adminSection" style="display:none">
+    <h2>User Management</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th><th>Role</th><th>2FA</th><th>Joined</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="userTable">
+        <tr><td colspan="5" class="empty">Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Incident modal ── -->
   <div class="modal-overlay" id="incidentModal" style="display:none" onclick="handleOverlayClick(event)">
     <div class="modal-box">
       <div class="modal-header">
@@ -253,7 +378,7 @@
   </div>
 
   <script>
-    // Guard — redirect to login if no token
+    // ── Guard ─────────────────────────────────────────────────────────────────
     const token = localStorage.getItem('token');
     if (!token) window.location.replace('/login.html');
 
@@ -272,8 +397,120 @@
       window.location.replace('/login.html');
     }
 
-    // ── Sensor functions ──────────────────────────────────────────────────────
+    // ── Profile dropdown ──────────────────────────────────────────────────────
+    function toggleDropdown() {
+      const dd = document.getElementById('profileDropdown');
+      dd.style.display = dd.style.display === 'none' ? 'block' : 'none';
+    }
 
+    document.addEventListener('click', (e) => {
+      if (!document.getElementById('profileBtn').contains(e.target) &&
+          !document.getElementById('profileDropdown').contains(e.target)) {
+        document.getElementById('profileDropdown').style.display = 'none';
+      }
+    });
+
+    // ── Load profile (populates dropdown) ────────────────────────────────────
+    async function loadProfile() {
+      try {
+        const res  = await fetch('/api/settings/profile', { headers: authHeaders() });
+        if (res.status === 401) { doLogout(); return; }
+        const { user } = await res.json();
+
+        document.getElementById('loggedInAs').textContent = user.email;
+        document.getElementById('dropEmail').textContent  = user.email;
+        document.getElementById('dropRole').textContent   = user.role;
+        document.getElementById('dropRole').className     = 'drop-role ' + user.role;
+
+        render2FAStatus(user.twoFactorEnabled);
+
+        if (user.role === 'admin') {
+          document.getElementById('adminSection').style.display = 'block';
+          loadAdminUsers();
+        }
+      } catch {
+        // silent — email already shown from localStorage
+      }
+    }
+
+    // ── 2FA settings (inside dropdown) ───────────────────────────────────────
+    function render2FAStatus(enabled) {
+      const sec = document.getElementById('twoFASection');
+      if (enabled) {
+        sec.innerHTML = '<div class="twofa-on">&#10003; Two-Factor Authentication enabled</div>';
+      } else {
+        sec.innerHTML = `
+          <div class="twofa-off">Two-Factor Authentication not enabled</div>
+          <button class="btn-2fa" onclick="doEnable2FA()">Enable 2FA</button>
+        `;
+      }
+    }
+
+    async function doEnable2FA() {
+      try {
+        const res  = await fetch('/api/settings/enable-2fa', { method: 'POST', headers: authHeaders() });
+        if (res.status === 401) { doLogout(); return; }
+        const { qrCode } = await res.json();
+
+        document.getElementById('qrImage').src              = qrCode;
+        document.getElementById('qrSection').style.display  = 'block';
+        document.getElementById('twoFASection').innerHTML   =
+          '<div class="twofa-off">Scan QR, then confirm below.</div>';
+      } catch {
+        alert('Failed to initiate 2FA setup');
+      }
+    }
+
+    async function doConfirm2FA() {
+      const otpToken = document.getElementById('confirmOTP').value.trim();
+      const msgEl    = document.getElementById('confirmMsg');
+      msgEl.textContent = '';
+
+      try {
+        const res  = await fetch('/api/settings/confirm-2fa', {
+          method:  'POST',
+          headers: authHeaders(),
+          body:    JSON.stringify({ token: otpToken }),
+        });
+        const data = await res.json();
+        if (!res.ok) { msgEl.textContent = data.message; return; }
+        document.getElementById('qrSection').style.display = 'none';
+        render2FAStatus(true);
+      } catch {
+        msgEl.textContent = 'Request failed';
+      }
+    }
+
+    // ── Admin: user management ────────────────────────────────────────────────
+    async function loadAdminUsers() {
+      try {
+        const res    = await fetch('/api/admin/users', { headers: authHeaders() });
+        const { users } = await res.json();
+        document.getElementById('userTable').innerHTML = users.map(u => `
+          <tr>
+            <td>${u.email}</td>
+            <td><span class="badge ${u.role === 'admin' ? 'badge-admin' : 'badge-user'}">${u.role}</span></td>
+            <td style="color:${u.twoFactorEnabled ? '#2e7d32' : '#ccc'}">${u.twoFactorEnabled ? '✓' : '—'}</td>
+            <td>${new Date(u.createdAt).toLocaleDateString()}</td>
+            <td>
+              ${u.role !== 'admin'
+                ? `<button class="promote-btn" onclick="promoteUser('${u._id}')">Promote to Admin</button>`
+                : '<span style="color:#aaa;font-size:12px">—</span>'}
+            </td>
+          </tr>
+        `).join('');
+      } catch {
+        document.getElementById('userTable').innerHTML =
+          '<tr><td colspan="5" class="empty">Failed to load users</td></tr>';
+      }
+    }
+
+    async function promoteUser(userId) {
+      const res = await fetch(`/api/admin/promote/${userId}`, { method: 'PUT', headers: authHeaders() });
+      if (res.ok) loadAdminUsers();
+    }
+
+    // ── Sensor functions ──────────────────────────────────────────────────────
     async function startSensors() {
       await fetch('/api/sensor/start', { method: 'POST', headers: authHeaders() });
       setRunning(true);
@@ -333,6 +570,7 @@
       }).join('');
     }
 
+    // ── Incident modal ────────────────────────────────────────────────────────
     async function showIncident(incidentId) {
       const modal   = document.getElementById('incidentModal');
       const content = document.getElementById('modalContent');
@@ -377,6 +615,68 @@
     function handleOverlayClick(e) {
       if (e.target === document.getElementById('incidentModal')) closeModal();
     }
+
+    // ── PAT management ───────────────────────────────────────────────────────
+    async function loadPATs() {
+      try {
+        const res  = await fetch('/api/pat', { headers: authHeaders() });
+        if (!res.ok) return;
+        const { pats } = await res.json();
+        const list = document.getElementById('patList');
+        if (!pats.length) {
+          list.innerHTML = '<div style="color:#aaa;font-size:11px;padding:4px 0">No tokens yet</div>';
+          return;
+        }
+        list.innerHTML = pats.map(p => `
+          <div class="pat-item">
+            <span>
+              <span class="${p.revoked ? 'pat-item-revoked' : 'pat-item-name'}">${p.name || '(unnamed)'}</span>
+              <span class="pat-item-date">${new Date(p.createdAt).toLocaleDateString()}</span>
+            </span>
+            ${p.revoked
+              ? '<span style="color:#ccc;font-size:11px">revoked</span>'
+              : `<button class="pat-revoke-btn" onclick="doRevokePAT('${p._id}')">Revoke</button>`}
+          </div>
+        `).join('');
+      } catch { /* silent */ }
+    }
+
+    async function doCreatePAT() {
+      const name = document.getElementById('patName').value.trim();
+      try {
+        const res  = await fetch('/api/pat', {
+          method:  'POST',
+          headers: authHeaders(),
+          body:    JSON.stringify({ name }),
+        });
+        if (res.status === 401) { doLogout(); return; }
+        const data = await res.json();
+        if (!res.ok) { alert(data.message); return; }
+
+        document.getElementById('patTokenValue').textContent = data.token;
+        document.getElementById('patTokenBox').style.display = 'block';
+        document.getElementById('patName').value = '';
+        loadPATs();
+      } catch {
+        alert('Failed to create token');
+      }
+    }
+
+    async function doRevokePAT(id) {
+      if (!confirm('Revoke this token? It will stop working immediately.')) return;
+      try {
+        const res = await fetch(`/api/pat/${id}`, { method: 'DELETE', headers: authHeaders() });
+        if (res.status === 401) { doLogout(); return; }
+        loadPATs();
+        document.getElementById('patTokenBox').style.display = 'none';
+      } catch {
+        alert('Failed to revoke token');
+      }
+    }
+
+    // ── Boot ──────────────────────────────────────────────────────────────────
+    loadProfile();
+    loadPATs();
   </script>
 
 </body>

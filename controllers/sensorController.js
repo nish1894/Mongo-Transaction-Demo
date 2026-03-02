@@ -27,4 +27,10 @@ const getIncident = async (req, res) => {
   res.json(data);
 };
 
-module.exports = { startReadings, stopReadings, getReadings, getIncident };
+// GET /api/sensor/alerts
+const getAlerts = async (req, res) => {
+  const alerts = await sensorService.getAlerts();
+  res.json({ alerts });
+};
+
+module.exports = { startReadings, stopReadings, getReadings, getIncident, getAlerts };

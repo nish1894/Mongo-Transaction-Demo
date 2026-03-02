@@ -88,13 +88,33 @@
     }
     .auth-msg.error   { color: #c62828; }
     .auth-msg.success { color: #2e7d32; }
+
+    /* ── OTP card extras ── */
+    .otp-label {
+      font-size: 13px; font-weight: bold;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: #1565c0; margin-bottom: 6px;
+    }
+    .otp-hint { font-size: 12px; color: #888; margin-bottom: 14px; }
+    .otp-input {
+      text-align: center; letter-spacing: 8px; font-size: 22px;
+      padding: 10px 12px; border: 1px solid #d0d9e8; border-radius: 4px;
+      font-family: inherit; background: #f9fafb; outline: none; width: 100%;
+    }
+    .otp-input:focus { border-color: #1565c0; background: #fff; }
+    .back-link {
+      background: none; border: none; color: #aaa; font-size: 12px;
+      font-family: inherit; cursor: pointer; padding: 0; text-align: center;
+    }
+    .back-link:hover { color: #555; }
   </style>
 </head>
 <body>
 
   <h1>Smart Cold Storage Monitor</h1>
 
-  <div class="auth-card">
+  <!-- ── Step 1: Login / Signup ── -->
+  <div class="auth-card" id="authCard">
     <div class="auth-tabs">
       <button class="tab-btn active" id="tabLogin"  onclick="showTab('login')">Login</button>
       <button class="tab-btn"        id="tabSignup" onclick="showTab('signup')">Sign Up</button>
@@ -115,12 +135,26 @@
     </div>
   </div>
 
-  <script>
-    // If already logged in, go straight to the dashboard
-    if (localStorage.getItem('token')) {
-      window.location.replace('/');
-    }
+  <!-- ── Step 2: OTP (shown only when 2FA required) ── -->
+  <div class="auth-card" id="otpCard" style="display:none">
+    <div class="otp-label">Two-Factor Verification</div>
+    <div class="otp-hint">Enter the 6-digit code from Microsoft Authenticator</div>
+    <div class="auth-form">
+      <input type="text" id="otpToken" class="otp-input" placeholder="000000"
+             maxlength="6" autocomplete="one-time-code" inputmode="numeric" />
+      <button class="auth-submit" onclick="doVerify2FA()">Verify</button>
+      <div id="otpMsg" class="auth-msg"></div>
+      <button class="back-link" onclick="showAuthCard()">← Back to login</button>
+    </div>
+  </div>
 
+  <script>
+    // Redirect immediately if already logged in
+    if (localStorage.getItem('token')) window.location.replace('/');
+
+    let pendingEmail = null;
+
+    // ── Card / tab switching ──────────────────────────────────────────────────
     function showTab(tab) {
       const isLogin = tab === 'login';
       document.getElementById('loginForm').style.display  = isLogin ? 'flex' : 'none';
@@ -129,12 +163,25 @@
       document.getElementById('tabSignup').classList.toggle('active', !isLogin);
     }
 
+    function showOTPCard() {
+      document.getElementById('authCard').style.display = 'none';
+      document.getElementById('otpCard').style.display  = 'block';
+      document.getElementById('otpToken').focus();
+    }
+
+    function showAuthCard() {
+      document.getElementById('otpCard').style.display  = 'none';
+      document.getElementById('authCard').style.display = 'block';
+      pendingEmail = null;
+    }
+
     function setMsg(id, text, type) {
       const el = document.getElementById(id);
       el.textContent = text;
-      el.className   = 'auth-msg ' + type;
+      el.className   = 'auth-msg ' + (type || '');
     }
 
+    // ── Login ─────────────────────────────────────────────────────────────────
     async function doLogin() {
       const email    = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
@@ -142,12 +189,18 @@
 
       try {
         const res  = await fetch('/api/auth/login', {
-          method: 'POST',
+          method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
+          body:    JSON.stringify({ email, password }),
         });
         const data = await res.json();
         if (!res.ok) return setMsg('loginMsg', data.message, 'error');
+
+        if (data.require2FA) {
+          pendingEmail = email;
+          showOTPCard();
+          return;
+        }
 
         localStorage.setItem('token', data.token);
         localStorage.setItem('email', email);
@@ -157,6 +210,7 @@
       }
     }
 
+    // ── Signup ────────────────────────────────────────────────────────────────
     async function doSignup() {
       const email    = document.getElementById('signupEmail').value.trim();
       const password = document.getElementById('signupPassword').value;
@@ -164,9 +218,9 @@
 
       try {
         const res  = await fetch('/api/auth/signup', {
-          method: 'POST',
+          method:  'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
+          body:    JSON.stringify({ email, password }),
         });
         const data = await res.json();
         if (!res.ok) return setMsg('signupMsg', data.message, 'error');
@@ -179,6 +233,34 @@
         setMsg('signupMsg', 'Request failed', 'error');
       }
     }
+
+    // ── 2FA verify ────────────────────────────────────────────────────────────
+    async function doVerify2FA() {
+      const token = document.getElementById('otpToken').value.trim();
+      setMsg('otpMsg', '', '');
+
+      try {
+        const res  = await fetch('/api/auth/verify-2fa', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ email: pendingEmail, token }),
+        });
+        const data = await res.json();
+        if (!res.ok) return setMsg('otpMsg', data.message, 'error');
+
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('email', pendingEmail);
+        window.location.replace('/');
+      } catch {
+        setMsg('otpMsg', 'Request failed', 'error');
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('otpToken').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') doVerify2FA();
+      });
+    });
   </script>
 
 </body>

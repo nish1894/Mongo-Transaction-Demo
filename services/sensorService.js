@@ -126,4 +126,13 @@ const getIncident = async (incidentId) => {
   return { incident };
 };
 
-module.exports = { start, stop, getReadings, getIncident };
+const getAlerts = async () => {
+  return Alert.find()
+    .sort({ createdAt: -1 })
+    .limit(20)
+    .populate('sensorId', 'name')
+    .populate('incidentId')
+    .lean();
+};
+
+module.exports = { start, stop, getReadings, getIncident, getAlerts };
